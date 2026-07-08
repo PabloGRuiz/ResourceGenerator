@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  generator:
+    build: .
+    container_name: resource_generator
+    environment:
+      # Se asume por defecto la configuración para un servidor X11 local (como VcXsrv en Windows)
+      - DISPLAY=host.docker.internal:0.0
+    volumes:
+      # Montamos el archivo .env para pasar el token sin reconstruir la imagen
+      - ./.env:/app/.env
+      # Montamos la carpeta src para poder hacer cambios en caliente si fuera necesario
+      - ./src:/app/src
+    # Para permitir que la app se conecte al host de Windows
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
